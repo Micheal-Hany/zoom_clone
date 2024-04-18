@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Apply the Google services plugin to your build script
+        classpath 'com.google.gms:google-services:4.3.8'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+// Apply the Google services plugin to your app module
+apply plugin: 'com.google.gms.google-services'
+
+// Set the build directory for root project and subprojects
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+// Ensure that evaluation depends on ':app' for subprojects
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+// Define the clean task
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
